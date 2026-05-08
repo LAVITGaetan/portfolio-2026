@@ -90,7 +90,9 @@ export default function HeroSection() {
                     </a>
                 </div>
                 <div className="hero-right">
-                    <div className="hero-placeholder" />
+                    <div className="hero-placeholder">
+                        <img className="hero-image" src={"/img/hero.jpg"} alt="hero image"/>
+                    </div>
                     <Image className="hero-shine" src={"/img/shines.png"} alt="decoration stars" width={64} height={64} />
                 </div>
             </div>
