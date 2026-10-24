@@ -19,6 +19,8 @@ export type Project = {
     stack: string[];
     /** Image path in /public, e.g. "/img/thumbnails/chez-pepe.png". A placeholder is shown when missing. */
     thumbnail?: string;
+    /** Number of screenshots named "<slug>-1.png", "<slug>-2.png"… in /img/thumbnails. */
+    galleryCount?: number;
     links: {
         live?: string;
         github?: string;
@@ -43,6 +45,7 @@ export const PROJECTS: Project[] = [
         status: "En ligne",
         stack: ["Wordpress", "WooCommerce", "Figma", "CSS"],
         thumbnail: "/img/thumbnails/joha-kpopstore.png",
+        galleryCount: 3,
         links: { live: "https://johakpopstore.com" },
     },
         {
@@ -60,6 +63,7 @@ export const PROJECTS: Project[] = [
         status: "En cours",
         stack: ["Next.js", "SpringBoot"],
         thumbnail: "/img/thumbnails/chez-pepe.png",
+        galleryCount: 6,
         links: { live: "https://chez-pepe.re", github: "https://github.com/LAVITGaetan/location-pepe" },
     },
     {
@@ -76,7 +80,7 @@ export const PROJECTS: Project[] = [
         year: "2026",
         role: "Dev & Design",
         status: "En cours",
-        stack: ["Next.js", "Microsoft Fabric", "LLM"],
+        stack: ["Next.js", "Microsoft Fabric", "IA"],
         thumbnail: "/img/thumbnails/mobiwise.png",
             links: { live: "https://mobiwise.vercel.app/", github: "https://github.com" },
         collaborators: [

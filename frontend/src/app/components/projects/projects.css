@@ -1218,6 +1218,166 @@ a.collab-card:hover {
 }
 
 /* ============================================================
+   GALLERY — screenshot mosaic + fullscreen lightbox
+   ============================================================ */
+
+.gal-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 72px;
+}
+
+.gal-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.gal-head .proj-modal-subtitle {
+  margin-top: 0;
+}
+
+.gal-head-count {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--color-text-light);
+}
+
+/* First screenshot large (2×2), the others flow around it. */
+.gal-mosaic {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.gal-mosaic li {
+  aspect-ratio: 16 / 10;
+}
+
+.gal-mosaic li:first-child {
+  grid-column: span 2;
+  grid-row: span 2;
+  aspect-ratio: auto;
+}
+
+.gal-tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  padding: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-brand);
+  cursor: zoom-in;
+  transition: border-color 0.2s ease;
+}
+
+.gal-tile img {
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.gal-tile:hover {
+  border-color: var(--color-secondary-text);
+}
+
+.gal-tile:hover img {
+  transform: scale(1.06);
+}
+
+.gal-tile-caption {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  padding: 4px 10px;
+  font-size: 11px;
+  color: var(--color-text);
+  background: rgba(15, 15, 20, 0.82);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.gal-tile:hover .gal-tile-caption,
+.gal-tile:focus-visible .gal-tile-caption {
+  opacity: 1;
+  transform: none;
+}
+
+.gal-lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+.gal-lightbox[open] {
+  display: flex;
+  flex-direction: column;
+  animation: gal-fade 0.25s ease;
+}
+
+.gal-lightbox::backdrop {
+  background: transparent;
+}
+
+@keyframes gal-fade {
+  from { opacity: 0; }
+}
+
+.gal-lightbox-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 5%;
+}
+
+.gal-lightbox-bar.is-bottom {
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.gal-lightbox-bar .proj-modal-count {
+  margin-right: 6px;
+}
+
+.gal-lightbox-name {
+  font-size: 13px;
+  color: var(--color-text-light-accent);
+}
+
+.gal-lightbox-stage {
+  position: relative;
+  flex: 1;
+  margin: 0 5%;
+  animation: gal-rise 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.gal-lightbox-stage img {
+  object-fit: contain;
+}
+
+@keyframes gal-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 
@@ -1259,6 +1419,33 @@ a.collab-card:hover {
 @media (max-width: 600px) {
   .proj-section {
     padding: 40px 16px;
+  }
+
+  .gal-section {
+    margin-top: 56px;
+  }
+
+  .gal-mosaic {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .gal-mosaic li:first-child {
+    grid-row: auto;
+    aspect-ratio: 16 / 10;
+  }
+
+  /* An odd one out at the end takes the full row. */
+  .gal-mosaic li:nth-child(even):last-child {
+    grid-column: span 2;
+  }
+
+  .gal-lightbox-bar {
+    padding: 14px 16px;
+  }
+
+  .gal-lightbox-stage {
+    margin: 0 16px;
   }
 
   .proj-tab {
@@ -1321,6 +1508,8 @@ a.collab-card:hover {
   .proj-modal.is-closing,
   .proj-modal-content,
   .proj-tab-panel,
+  .gal-lightbox[open],
+  .gal-lightbox-stage,
   .proj-view,
   .pg-card {
     animation: none;
@@ -1336,6 +1525,8 @@ a.collab-card:hover {
   .proj-tab::after,
   .collab-card,
   .collab-tooltip,
+  .gal-tile img,
+  .gal-tile-caption,
   .ps-featured-media,
   .proj-view-btn {
     transition: none;

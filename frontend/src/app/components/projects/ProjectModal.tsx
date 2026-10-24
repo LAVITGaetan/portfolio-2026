@@ -5,6 +5,7 @@ import type { Project } from "../../data/projects";
 import ProjectThumb from "./ProjectThumb";
 import { StackTags, StatusBadge } from "./ProjectBits";
 import { CollaboratorTabs } from "./ProjectCollaborators";
+import ProjectGallery from "./ProjectGallery";
 import { ArrowIcon, CloseIcon, ExternalIcon, GithubIcon } from "./ProjectIcons";
 import "./projects.css";
 
@@ -98,20 +99,13 @@ export default function ProjectModal({ projects, index, onClose, onNavigate }: P
             document.body.style.overflow = "";
             onClose();
         };
-        const onKey = (event: KeyboardEvent) => {
-            if (event.key === "ArrowRight") go(1);
-            if (event.key === "ArrowLeft") go(-1);
-        };
-
         dialog.addEventListener("cancel", onCancel);
         dialog.addEventListener("close", onNativeClose);
-        dialog.addEventListener("keydown", onKey);
         return () => {
             dialog.removeEventListener("cancel", onCancel);
             dialog.removeEventListener("close", onNativeClose);
-            dialog.removeEventListener("keydown", onKey);
         };
-    }, [requestClose, go, onClose]);
+    }, [requestClose, onClose]);
 
     const position = index !== null ? String(index + 1).padStart(2, "0") : "00";
     const total = String(projects.length).padStart(2, "0");
@@ -121,6 +115,11 @@ export default function ProjectModal({ projects, index, onClose, onNavigate }: P
             ref={dialogRef}
             className={`proj-modal${closing ? " is-closing" : ""}`}
             aria-labelledby="proj-modal-title"
+            // React handler (not a native listener) so nested widgets (tabs, lightbox) can stopPropagation first.
+            onKeyDown={(event) => {
+                if (event.key === "ArrowRight") go(1);
+                if (event.key === "ArrowLeft") go(-1);
+            }}
         >
             {project && (
                 <div className="proj-modal-scroll" ref={scrollRef}>
@@ -202,6 +201,8 @@ export default function ProjectModal({ projects, index, onClose, onNavigate }: P
                                 </div>
                             </aside>
                         </div>
+
+                        <ProjectGallery project={project} />
 
                         <nav className="proj-modal-next" aria-label="Navigation entre projets">
                             <button onClick={() => go(-1)}>
