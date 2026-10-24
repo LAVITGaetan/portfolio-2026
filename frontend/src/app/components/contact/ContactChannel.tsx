@@ -36,7 +36,7 @@ function PrivateChannel({ id, label, masked }: { id: PrivateContactId; label: st
                     </ChannelBody>
                     <span className="ct-reveal-hint">
                         <EyeIcon size={14} />
-                        {hasFailed ? "Réessayer" : "Afficher"}
+                        <span className="ct-reveal-label">{hasFailed ? "Réessayer" : "Afficher"}</span>
                     </span>
                 </button>
             </li>

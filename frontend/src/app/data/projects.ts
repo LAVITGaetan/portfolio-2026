@@ -72,4 +72,25 @@ export const PROJECTS: Project[] = [
         thumbnail: "/img/thumbnails/mobiwise.png",
             links: { live: "https://mobiwise.vercel.app/", github: "https://github.com" },
     },
+        {
+        slug: "paf-warrior-2d",
+        title: "Legend Of The Paf Warrior",
+        tagline: "Jeu vidéo en 2D en Pixel-art avec vue isométrique",
+        description:
+            "RPG de stratégie tour par tour tactique en 2D Pixel-art avec vue isométrique",
+        details: [
+            "Librairie LibGDX",
+            "Créations en Pixel-art",
+            "Principes Java",
+            "Test Unitaires & Couverture",
+            "Création de carte 2D isometrique",
+            "Travail en équipe (Les Pafousquetaires)",
+        ],
+        year: "2025",
+        role: "UI/UX/Art Designer & Dev",
+        status: "En cours",
+        stack: ["Java", "LibGDX", "Tiled", "Aseprite"],
+        thumbnail: "/img/thumbnails/paf-warrior-2d.png",
+            links: { github: "https://github.com/777-fr/THE-LEGEND-OF-THE-PAF-WARRIOR" },
+    },
 ];

@@ -153,6 +153,10 @@
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 
+.ct-channel-link svg {
+  flex-shrink: 0;
+}
+
 .ct-reveal:hover .ct-reveal-hint {
   color: var(--color-text);
   border-color: var(--color-primary);
@@ -366,8 +370,9 @@
    ============================================================ */
 
 @media (max-width: 900px) {
+  /* minmax(0, …): a bare 1fr can't shrink below its widest nowrap content (masked values). */
   .ct-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -382,6 +387,17 @@
 
   .ct-form {
     padding: 20px 16px;
+  }
+}
+
+/* Room for the masked value: the eye alone says "show", the button keeps its aria-label. */
+@media (max-width: 420px) {
+  .ct-reveal-label {
+    display: none;
+  }
+
+  .ct-channel {
+    padding: 14px 12px;
   }
 }
 
