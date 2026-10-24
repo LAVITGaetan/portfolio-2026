@@ -1006,7 +1006,9 @@
   object-fit: cover;
 }
 
+/* isolate: the avatar layers stay inside the stack instead of rising over the modal topbar. */
 .collab-stack {
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
 }
@@ -1166,7 +1168,7 @@
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
-.collab-card:hover {
+a.collab-card:hover {
   border-color: var(--color-secondary-text);
   transform: translateY(-2px);
 }

@@ -9,13 +9,13 @@ const STACK_MAX = 3;
 
 type Tab = "overview" | "collaborators";
 
-/** GitHub profile picture, or the GitHub mark when it can't load. */
+/** GitHub profile picture, or the GitHub mark without a username or when it can't load. */
 function CollaboratorAvatar({ collaborator, size }: { collaborator: Collaborator; size: number }) {
     const [hasFailed, setHasFailed] = useState(false);
 
     return (
         <span className="collab-avatar" style={{ width: size, height: size }}>
-            {hasFailed ? (
+            {!collaborator.github || hasFailed ? (
                 <GithubIcon size={Math.round(size * 0.55)} />
             ) : (
                 <Image
@@ -42,7 +42,7 @@ export function CollaboratorStack({ collaborators, size, className = "" }: { col
             aria-label={`Avec ${collaborators.map((collaborator) => collaborator.name).join(", ")}`}
         >
             {shown.map((collaborator, index) => (
-                <span key={collaborator.github} style={{ "--layer": shown.length - index } as CSSProperties}>
+                <span key={collaborator.name} style={{ "--layer": shown.length - index } as CSSProperties}>
                     <CollaboratorAvatar collaborator={collaborator} size={size} />
                     <span className="collab-tooltip" aria-hidden="true">
                         {collaborator.name}
@@ -55,24 +55,41 @@ export function CollaboratorStack({ collaborators, size, className = "" }: { col
     );
 }
 
+/** Links to the GitHub profile when there is one. */
+function CollaboratorCard({ collaborator }: { collaborator: Collaborator }) {
+    const body = (
+        <>
+            <CollaboratorAvatar collaborator={collaborator} size={56} />
+            <span className="collab-card-text">
+                <span className="collab-card-name">
+                    {collaborator.name}
+                    {collaborator.nickname && <span className="collab-nickname">{collaborator.nickname}</span>}
+                </span>
+                {collaborator.github && (
+                    <span className="collab-card-github">
+                        <GithubIcon size={12} /> @{collaborator.github}
+                    </span>
+                )}
+            </span>
+        </>
+    );
+
+    if (!collaborator.github) return <div className="collab-card">{body}</div>;
+
+    return (
+        <a className="collab-card" href={`https://github.com/${collaborator.github}`} target="_blank" rel="noopener noreferrer">
+            {body}
+            <ExternalIcon size={14} />
+        </a>
+    );
+}
+
 function CollaboratorList({ collaborators }: { collaborators: Collaborator[] }) {
     return (
         <ul className="collab-list">
             {collaborators.map((collaborator) => (
-                <li key={collaborator.github}>
-                    <a className="collab-card" href={`https://github.com/${collaborator.github}`} target="_blank" rel="noopener noreferrer">
-                        <CollaboratorAvatar collaborator={collaborator} size={56} />
-                        <span className="collab-card-text">
-                            <span className="collab-card-name">
-                                {collaborator.name}
-                                {collaborator.nickname && <span className="collab-nickname">{collaborator.nickname}</span>}
-                            </span>
-                            <span className="collab-card-github">
-                                <GithubIcon size={12} /> @{collaborator.github}
-                            </span>
-                        </span>
-                        <ExternalIcon size={14} />
-                    </a>
+                <li key={collaborator.name}>
+                    <CollaboratorCard collaborator={collaborator} />
                 </li>
             ))}
         </ul>

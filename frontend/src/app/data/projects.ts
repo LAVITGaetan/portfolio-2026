@@ -3,8 +3,8 @@ export type ProjectStatus = "En ligne" | "En cours";
 export type Collaborator = {
     name: string;
     nickname?: string;
-    /** GitHub username: gives both the profile link and the avatar. */
-    github: string;
+    /** GitHub username: gives both the profile link and the avatar (GitHub mark when missing). */
+    github?: string;
 };
 
 export type Project = {
@@ -79,7 +79,11 @@ export const PROJECTS: Project[] = [
         stack: ["Next.js", "Microsoft Fabric", "LLM"],
         thumbnail: "/img/thumbnails/mobiwise.png",
             links: { live: "https://mobiwise.vercel.app/", github: "https://github.com" },
-        collaborators: [{ name: "Mahé", nickname: "le GOAT", github: "LessForOne" }],
+        collaborators: [
+            { name: "Mahé", nickname: "le GOAT", github: "LessForOne" },
+            { name: "Saneilla", nickname: "L'artiste", github: "SaneillaV-P" },
+            { name: "Raphael Baptiste", nickname: "Le professeur", github: "777-fr" },
+        ],
     },
         {
         slug: "paf-warrior-2d",
@@ -101,5 +105,9 @@ export const PROJECTS: Project[] = [
         stack: ["Java", "LibGDX", "Tiled", "Aseprite"],
         thumbnail: "/img/thumbnails/paf-warrior-2d.png",
             links: { github: "https://github.com/777-fr/THE-LEGEND-OF-THE-PAF-WARRIOR" },
+        collaborators: [
+            { name: "Raphael Baptiste", nickname: "Le professeur", github: "777-fr" },
+            { name: "Assad Madi", nickname: "Le conseiller" },
+        ],
     },
 ];

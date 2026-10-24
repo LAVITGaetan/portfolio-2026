@@ -149,14 +149,15 @@
 .stk-star {
   width: 14px;
   height: 14px;
-  fill: var(--color-secondary-text);
-  stroke: var(--color-secondary-text);
+  fill: var(--color-warning);
+  stroke: var(--color-warning);
   stroke-width: 1.6;
   stroke-linejoin: round;
 }
 
 .stk-star.off {
   fill: none;
+  stroke: var(--color-text-light);
 }
 
 .stk-level.is-large .stk-stars {
