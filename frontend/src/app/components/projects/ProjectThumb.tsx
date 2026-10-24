@@ -3,6 +3,7 @@
 import { useState, type CSSProperties } from "react";
 import Image from "next/image";
 import type { Project } from "../../data/projects";
+import { CollaboratorStack } from "./ProjectCollaborators";
 
 type Props = {
     project: Project;
@@ -34,11 +35,17 @@ export default function ProjectThumb({ project, className = "" }: Props) {
                     sizes="(max-width: 900px) 100vw, 50vw"
                     onError={() => setFailedSrc(project.thumbnail ?? null)}
                 />
+                <ThumbCollaborators project={project} />
             </div>
         );
     }
 
     return <ThumbPlaceholder project={project} className={className} />;
+}
+
+function ThumbCollaborators({ project }: { project: Project }) {
+    if (!project.collaborators?.length) return null;
+    return <CollaboratorStack collaborators={project.collaborators} size={32} className="proj-thumb-collabs" />;
 }
 
 function ThumbPlaceholder({ project, className }: Props) {
@@ -73,6 +80,7 @@ function ThumbPlaceholder({ project, className }: Props) {
                 </div>
             </div>
             <span className="proj-thumb-initials">{initials}</span>
+            <ThumbCollaborators project={project} />
         </div>
     );
 }

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Project } from "../../data/projects";
 import ProjectThumb from "./ProjectThumb";
 import { StackTags, StatusBadge } from "./ProjectBits";
+import { CollaboratorTabs } from "./ProjectCollaborators";
 import { ArrowIcon, CloseIcon, ExternalIcon, GithubIcon } from "./ProjectIcons";
 import "./projects.css";
 
@@ -16,6 +17,21 @@ type Props = {
 };
 
 const CLOSE_DURATION = 220;
+
+function ProjectOverview({ project }: { project: Project }) {
+    return (
+        <>
+            <p className="proj-modal-desc">{project.description}</p>
+
+            <h3 className="proj-modal-subtitle">Points clés</h3>
+            <ul className="proj-modal-details">
+                {project.details.map((detail) => (
+                    <li key={detail}>{detail}</li>
+                ))}
+            </ul>
+        </>
+    );
+}
 
 export default function ProjectModal({ projects, index, onClose, onNavigate }: Props) {
     const dialogRef = useRef<HTMLDialogElement>(null);
@@ -141,14 +157,11 @@ export default function ProjectModal({ projects, index, onClose, onNavigate }: P
                                 <StatusBadge status={project.status} />
                                 <h2 id="proj-modal-title" className="proj-modal-title">{project.title}</h2>
                                 <p className="proj-modal-tagline">{project.tagline}</p>
-                                <p className="proj-modal-desc">{project.description}</p>
-
-                                <h3 className="proj-modal-subtitle">Points clés</h3>
-                                <ul className="proj-modal-details">
-                                    {project.details.map((detail) => (
-                                        <li key={detail}>{detail}</li>
-                                    ))}
-                                </ul>
+                                {project.collaborators?.length ? (
+                                    <CollaboratorTabs collaborators={project.collaborators} overview={<ProjectOverview project={project} />} />
+                                ) : (
+                                    <ProjectOverview project={project} />
+                                )}
                             </div>
 
                             <aside className="proj-modal-aside">

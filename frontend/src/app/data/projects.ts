@@ -1,5 +1,12 @@
 export type ProjectStatus = "En ligne" | "En cours";
 
+export type Collaborator = {
+    name: string;
+    nickname?: string;
+    /** GitHub username: gives both the profile link and the avatar. */
+    github: string;
+};
+
 export type Project = {
     slug: string;
     title: string;
@@ -16,6 +23,7 @@ export type Project = {
         live?: string;
         github?: string;
     };
+    collaborators?: Collaborator[];
 };
 
 // Placeholder data — replace with your real projects.
@@ -71,6 +79,7 @@ export const PROJECTS: Project[] = [
         stack: ["Next.js", "Microsoft Fabric", "LLM"],
         thumbnail: "/img/thumbnails/mobiwise.png",
             links: { live: "https://mobiwise.vercel.app/", github: "https://github.com" },
+        collaborators: [{ name: "Mahé", nickname: "le GOAT", github: "LessForOne" }],
     },
         {
         slug: "paf-warrior-2d",
