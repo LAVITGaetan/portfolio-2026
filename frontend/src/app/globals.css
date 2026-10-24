@@ -4,6 +4,13 @@
   margin: 0;
 }
 
+/* Menu links glide to their section; the meerkat throws at every section crossed on the way. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 :root {
   --color-bg: #0F0F14;
   --color-surface: #1A1A24;
