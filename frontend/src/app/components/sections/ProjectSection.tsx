@@ -12,7 +12,7 @@ import "../projects/projects.css";
 type Filter = "Tous" | ProjectStatus;
 type View = "grid" | "showcase";
 
-const FILTERS: Filter[] = ["Tous", "En ligne", "En cours", "Archivé"];
+const FILTERS: Filter[] = ["Tous", "En ligne", "En cours"];
 
 const VIEWS = [
     { id: "grid", label: "Affichage en cartes", Icon: GridIcon },

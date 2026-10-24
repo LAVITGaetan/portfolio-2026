@@ -1,4 +1,4 @@
-export type ProjectStatus = "En ligne" | "En cours" | "Archivé";
+export type ProjectStatus = "En ligne" | "En cours";
 
 export type Project = {
     slug: string;

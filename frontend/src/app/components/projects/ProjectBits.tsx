@@ -4,7 +4,6 @@ import { ExternalIcon, GithubIcon } from "./ProjectIcons";
 const STATUS_CLASS: Record<ProjectStatus, string> = {
     "En ligne": "is-live",
     "En cours": "is-wip",
-    "Archivé": "is-archived",
 };
 
 export function StatusBadge({ status }: { status: ProjectStatus }) {

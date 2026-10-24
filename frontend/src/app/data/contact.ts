@@ -13,7 +13,7 @@ export type ContactSubject = {
 export const CONTACT_LINKS: ContactLink[] = [
     { id: "email", label: "Email", masked: "g*******@gmail.com" },
     { id: "phone", label: "Téléphone", masked: "06 93 ** ** **" },
-    { id: "linkedin", label: "LinkedIn", value: "in/gaetan-lavit", href: "https://re.linkedin.com/in/gaetan-lavit-d-hautefort" },
+    { id: "linkedin", label: "LinkedIn", value: "in/gaetan-lavit-d-hautefort", href: "https://www.linkedin.com/in/gaetan-lavit-d-hautefort-6231241b8/" },
     { id: "github", label: "GitHub", value: "@LAVITGaetan", href: "https://github.com/LAVITGaetan" },
 ];
 
