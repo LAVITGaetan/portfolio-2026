@@ -176,7 +176,7 @@
   list-style: none;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 170px), 1fr));
-  gap: 12px;
+  gap: 24px;
 }
 
 .stk-card {

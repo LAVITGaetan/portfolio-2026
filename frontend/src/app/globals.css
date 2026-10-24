@@ -300,7 +300,10 @@ p, span, li, button, a {
   color: var(--color-secondary-text);
 }
 
-/* Slides under the active link; position and width are set from the measured link. */
+/*
+ * Active link: the ninja meerkat throws a shuriken (see use-meerkat-launch.ts) that sticks
+ * under the link and unfolds into its underline. Position and width come from the measured link.
+ */
 .navbar-menu {
   position: relative;
 }
@@ -310,14 +313,134 @@ p, span, li, button, a {
   bottom: -14px;
   left: 0;
   height: 2px;
-  background: var(--color-secondary-text);
   pointer-events: none;
-  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+}
+
+/* The stuck shuriken unfolds from its center into the underline; the glow fades out. */
+.navbar-indicator-bar {
+  display: block;
+  height: 100%;
+  background: var(--color-secondary-text);
+  animation: navbar-indicator-unfold 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes navbar-indicator-unfold {
+  0%   { transform: scaleX(0.08); box-shadow: 0 0 14px var(--color-warning); }
+  60%  { transform: scaleX(1.08); }
+  100% { transform: scaleX(1); box-shadow: 0 0 0 transparent; }
+}
+
+/* Thrown shuriken: placed by the Web Animations keyframes, hidden between throws. */
+.navbar-projectile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  fill: var(--color-warning);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Ninja pose: headband tails floating, paw cocked with a shuriken that glints now and then. */
+.meerkat-band {
+  stroke: var(--color-primary);
+  stroke-width: 3;
+  stroke-linecap: butt;
+}
+
+.meerkat-band-tail {
+  stroke: var(--color-primary);
+  stroke-width: 2.2;
+  transform-box: view-box;
+  transform-origin: 23px 10.6px;
+  animation: meerkat-tail-float 1.8s ease-in-out infinite alternate;
+}
+
+.meerkat-band-tail.is-lower {
+  animation-delay: -0.9s;
+}
+
+.meerkat-arm-throw {
+  transform-box: view-box;
+  transform-origin: 38px 30.5px;
+}
+
+/* Inner path: intro and glint; outer group: hidden while thrown, back once the arm returns. */
+.meerkat-shuriken {
+  fill: var(--color-warning);
+  stroke: none;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation:
+    meerkat-shuriken-in 0.3s ease 1.4s backwards,
+    meerkat-shuriken-glint 4s ease-in-out 2.5s infinite;
+}
+
+.meerkat-held {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Already cocked: snaps forward at once (the shuriken leaves at ~16%), then re-arms. */
+.meerkat.is-throwing .meerkat-arm-throw {
+  animation: meerkat-throw 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.meerkat.is-throwing .meerkat-held {
+  animation: meerkat-reload 0.5s ease-out;
+}
+
+.meerkat.is-throwing .meerkat-band-tail {
+  animation: meerkat-tail-snap 0.5s ease-out;
+}
+
+@keyframes meerkat-tail-float {
+  from { transform: rotate(-6deg); }
+  to   { transform: rotate(8deg); }
+}
+
+@keyframes meerkat-tail-snap {
+  0%   { transform: rotate(0); }
+  20%  { transform: rotate(-22deg); }
+  55%  { transform: rotate(10deg); }
+  100% { transform: rotate(0); }
+}
+
+@keyframes meerkat-throw {
+  0%   { transform: rotate(0); }
+  16%  { transform: rotate(75deg); }
+  45%  { transform: rotate(65deg); }
+  100% { transform: rotate(0); }
+}
+
+@keyframes meerkat-reload {
+  0%, 15%  { opacity: 1; transform: scale(1); }
+  16%, 80% { opacity: 0; transform: scale(0); }
+  92%      { opacity: 1; transform: scale(1.3); }
+  100%     { opacity: 1; transform: scale(1); }
+}
+
+@keyframes meerkat-shuriken-in {
+  from { opacity: 0; transform: scale(0); }
+}
+
+@keyframes meerkat-shuriken-glint {
+  0%, 86%, 100% { transform: rotate(0) scale(1); }
+  93%           { transform: rotate(45deg) scale(1.35); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .navbar-indicator {
-    transition: opacity 0.3s ease;
+  .navbar-indicator-bar,
+  .meerkat-band-tail,
+  .meerkat-shuriken,
+  .meerkat.is-throwing .meerkat-arm-throw,
+  .meerkat.is-throwing .meerkat-held,
+  .meerkat.is-throwing .meerkat-band-tail {
+    animation: none;
   }
 }
 

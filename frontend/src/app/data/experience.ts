@@ -97,7 +97,7 @@ export const EXPERIENCE_CHAPTERS: ExperienceChapter[] = [
                 start: 2025,
                 end: null,
                 summary: "Master of Science en alternance à Epitech Réunion.",
-                highlights: ["Cyber-Sécurité", "Dev-ops", "Développement de jeux-vidéos", "Hackhathons", "Chef de projet", "Développement d'applications métier"],
+                highlights: ["Cyber-Sécurité", "Dev-ops", "Développement de jeux-vidéos", "Hackhathons", "Chef de projet"],
             },
             {
                 id: "free-apprenticeship",
