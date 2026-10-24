@@ -1,9 +1,8 @@
 "use server";
 
-import { headers } from "next/headers";
-import { CONTACT_EMAIL } from "../data/contact";
+import { PRIVATE_CONTACTS } from "../data/private-contact";
 import { parseContactForm } from "../utils/contact-form";
-import { isRateLimited } from "../utils/rate-limit";
+import { getClientIp, isRateLimited } from "../utils/rate-limit";
 
 export type SendContactResult = { isSent: true } | { isSent: false; error: string };
 
@@ -23,8 +22,7 @@ export async function sendContact(formData: FormData): Promise<SendContactResult
     const contact = parseContactForm(formData);
     if (!contact) return { isSent: false, error: "Vérifiez les champs du formulaire." };
 
-    const clientIp = (await headers()).get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
-    if (isRateLimited(clientIp, MAX_SENDS_PER_WINDOW, RATE_LIMIT_WINDOW)) {
+    if (isRateLimited(`send:${await getClientIp()}`, MAX_SENDS_PER_WINDOW, RATE_LIMIT_WINDOW)) {
         return { isSent: false, error: "Trop de messages d'un coup. Réessayez dans quelques minutes." };
     }
 
@@ -41,7 +39,7 @@ export async function sendContact(formData: FormData): Promise<SendContactResult
             headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
             body: JSON.stringify({
                 from: SENDER,
-                to: [CONTACT_EMAIL],
+                to: [PRIVATE_CONTACTS.email.value],
                 reply_to: contact.email,
                 subject: `[Portfolio] ${contact.subject} · ${contact.name}`,
                 // Plain text only: nothing the visitor typed can be rendered as HTML.

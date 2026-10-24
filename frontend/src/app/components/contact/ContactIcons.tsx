@@ -35,8 +35,26 @@ export function CheckIcon({ size = 16 }: IconProps) {
     );
 }
 
+export function PhoneIcon({ size = 16 }: IconProps) {
+    return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" aria-hidden="true">
+            <path d="M7 2h10v20H7zM11 18h2" />
+        </svg>
+    );
+}
+
+export function EyeIcon({ size = 16 }: IconProps) {
+    return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" aria-hidden="true">
+            <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" />
+            <circle cx="12" cy="12" r="3" />
+        </svg>
+    );
+}
+
 export function ChannelIcon({ id, size = 16 }: IconProps & { id: ContactLink["id"] }) {
     if (id === "email") return <MailIcon size={size} />;
+    if (id === "phone") return <PhoneIcon size={size} />;
     if (id === "linkedin") return <LinkedinIcon size={size} />;
     return <GithubIcon size={size} />;
 }

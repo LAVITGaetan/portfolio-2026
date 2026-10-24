@@ -112,6 +112,66 @@
   border-color: var(--color-success);
 }
 
+/* Private channels: masked until the visitor asks, then decoded (see ScrambleText) */
+
+.ct-reveal,
+.footer-reveal {
+  padding: 0;
+  font: inherit;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.ct-masked {
+  letter-spacing: 0.12em;
+  color: var(--color-text-light);
+}
+
+/* Waiting for the server: the asterisks breathe. */
+.is-revealing .ct-masked {
+  animation: ct-masked-pulse 0.8s ease-in-out infinite;
+}
+
+@keyframes ct-masked-pulse {
+  50% { opacity: 0.35; }
+}
+
+.ct-reveal-hint {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  padding: 4px 10px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-light-accent);
+  border: 1px solid var(--color-border);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.ct-reveal:hover .ct-reveal-hint {
+  color: var(--color-text);
+  border-color: var(--color-primary);
+}
+
+.footer-reveal {
+  font-size: 13px;
+}
+
+.scramble-noise {
+  color: var(--color-secondary-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-revealing .ct-masked {
+    animation: none;
+  }
+}
+
 .ct-location {
   font-size: 12px;
   letter-spacing: 0.06em;

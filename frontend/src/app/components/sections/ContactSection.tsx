@@ -2,16 +2,16 @@
 
 import { useState, type FormEvent } from "react";
 import SectionHeading from "../SectionHeading";
-import { AVAILABILITY, CONTACT_EMAIL, CONTACT_FIELD_LIMITS, CONTACT_LINKS, CONTACT_SUBJECTS, LOCATION } from "../../data/contact";
-import { ChannelIcon, CheckIcon, CopyIcon } from "../contact/ContactIcons";
-import { useContactSend, useCopy } from "../contact/contact-hooks";
+import { AVAILABILITY, CONTACT_FIELD_LIMITS, CONTACT_LINKS, CONTACT_SUBJECTS, LOCATION } from "../../data/contact";
+import { CheckIcon } from "../contact/ContactIcons";
+import ContactChannel from "../contact/ContactChannel";
+import { useContactSend } from "../contact/contact-hooks";
 import "../projects/projects.css";
 import "../contact/contact.css";
 
 export default function ContactSection() {
     const [subjectId, setSubjectId] = useState(CONTACT_SUBJECTS[0].id);
     const { isSent, isSending, error, send, reset } = useContactSend();
-    const { isCopied, copy } = useCopy(CONTACT_EMAIL);
 
     // No form `action`: React would clear the fields, and they must survive a failed send.
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -36,31 +36,7 @@ export default function ContactSection() {
 
                     <ul className="ct-channels">
                         {CONTACT_LINKS.map((link) => (
-                            <li key={link.id} className="ct-channel">
-                                <a
-                                    className="ct-channel-link"
-                                    href={link.href}
-                                    target={link.id === "email" ? undefined : "_blank"}
-                                    rel="noreferrer"
-                                >
-                                    <ChannelIcon id={link.id} size={18} />
-                                    <span className="ct-channel-text">
-                                        <span className="ct-channel-label">{link.label}</span>
-                                        <span className="ct-channel-value">{link.value}</span>
-                                    </span>
-                                </a>
-                                {link.id === "email" && (
-                                    <button
-                                        type="button"
-                                        className={`proj-icon-link ct-copy${isCopied ? " is-copied" : ""}`}
-                                        onClick={copy}
-                                        aria-label="Copier l'adresse email"
-                                        title={isCopied ? "Copié !" : "Copier"}
-                                    >
-                                        {isCopied ? <CheckIcon size={14} /> : <CopyIcon size={14} />}
-                                    </button>
-                                )}
-                            </li>
+                            <ContactChannel key={link.id} link={link} />
                         ))}
                     </ul>
 

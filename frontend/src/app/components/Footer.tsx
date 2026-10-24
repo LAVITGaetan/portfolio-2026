@@ -2,10 +2,11 @@
 
 import MeerkatLogo from "./MeerkatLogo";
 import { ArrowIcon } from "./projects/ProjectIcons";
-import { ChannelIcon } from "./contact/ContactIcons";
+import FooterContactLink from "./contact/FooterContactLink";
 import { AVAILABILITY, CONTACT_LINKS, LOCATION } from "../data/contact";
 import { OWNER_NAME, OWNER_ROLE, SECTION_LINKS } from "../data/site";
 import "./projects/projects.css";
+import "./contact/contact.css";
 
 export default function Footer() {
     return (
@@ -43,17 +44,7 @@ export default function Footer() {
                     <p className="footer-col-title">Contact</p>
                     <ul>
                         {CONTACT_LINKS.map((link) => (
-                            <li key={link.id}>
-                                <a
-                                    className="footer-link"
-                                    href={link.href}
-                                    target={link.id === "email" ? undefined : "_blank"}
-                                    rel="noreferrer"
-                                >
-                                    <ChannelIcon id={link.id} size={14} />
-                                    {link.value}
-                                </a>
-                            </li>
+                            <FooterContactLink key={link.id} link={link} />
                         ))}
                     </ul>
                 </div>
