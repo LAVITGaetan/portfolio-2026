@@ -49,7 +49,7 @@ export const PROJECTS: Project[] = [
         ],
         year: "2026",
         role: "Full Stack",
-        status: "En ligne",
+        status: "En cours",
         stack: ["Next.js", "SpringBoot"],
         thumbnail: "/img/thumbnails/chez-pepe.png",
         links: { live: "https://chez-pepe.re", github: "https://github.com/LAVITGaetan/location-pepe" },

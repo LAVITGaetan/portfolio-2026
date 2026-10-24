@@ -6,6 +6,7 @@ const HELD_SHURIKEN = "M45 14.6l.9 2.5 2.5.9-2.5.9-.9 2.5-.9-2.5-2.5-.9 2.5-.9z"
 /**
  * Ninja meerkat: headband with floating tails, throwing paw cocked behind the shoulder.
  * The navbar makes it throw (see use-meerkat-launch); the footer keeps the idle pose.
+ * On hover it hides the shuriken behind its back and whistles innocently.
  */
 export default function MeerkatLogo({ ref }: { ref?: Ref<SVGSVGElement> }) {
     return (
@@ -43,6 +44,12 @@ export default function MeerkatLogo({ ref }: { ref?: Ref<SVGSVGElement> }) {
                     </g>
                 </g>
                 <path className="meerkat-nose" d="M30.8 21.8h2.4L32 23.3z" />
+                <circle className="meerkat-whistle" cx="32" cy="24.7" r="0.8" />
+            </g>
+
+            <g className="meerkat-note">
+                <ellipse cx="45" cy="8" rx="1.6" ry="1.2" transform="rotate(-20 45 8)" />
+                <path d="M46.5 7.6V2c.8.9 2.6 1.6 2.6 3.8" />
             </g>
         </svg>
     );

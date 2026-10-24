@@ -206,11 +206,6 @@ p, span, li, button, a {
   animation: meerkat-glance 7s ease-in-out 2s infinite;
 }
 
-.meerkat:hover .meerkat-head,
-.meerkat:hover .meerkat-eyes {
-  animation-duration: 2.5s;
-}
-
 @keyframes meerkat-draw {
   to { stroke-dashoffset: 0; }
 }
@@ -440,6 +435,97 @@ p, span, li, button, a {
   .meerkat.is-throwing .meerkat-arm-throw,
   .meerkat.is-throwing .meerkat-held,
   .meerkat.is-throwing .meerkat-band-tail {
+    animation: none;
+  }
+}
+
+/* Hover: "wasn't me". Shuriken behind the back, eyes to the sky, whistling.
+   :not(.is-throwing) lets a throw break the act, then the pose comes back. */
+.meerkat-arm-throw,
+.meerkat-head,
+.meerkat-eyes {
+  transition: transform 0.25s ease;
+}
+
+/* Overshoot easing on the way back: the shuriken pops out like a reload. */
+.meerkat-held {
+  transition: transform 0.3s cubic-bezier(0.34, 1.8, 0.64, 1);
+}
+
+.meerkat-whistle {
+  fill: none;
+  stroke: var(--color-text);
+  stroke-width: 1;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.meerkat-note {
+  color: var(--color-secondary-text);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.meerkat-note ellipse {
+  fill: currentColor;
+}
+
+.meerkat-note path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+}
+
+.meerkat:hover:not(.is-throwing) .meerkat-arm-throw {
+  transform: rotate(135deg);
+}
+
+.meerkat:hover:not(.is-throwing) .meerkat-held {
+  transform: scale(0);
+  transition-timing-function: ease-in;
+}
+
+.meerkat:hover:not(.is-throwing) .meerkat-head {
+  animation: none;
+  transform: rotate(-6deg);
+}
+
+.meerkat:hover:not(.is-throwing) .meerkat-eyes {
+  animation: none;
+  transform: translate(0.6px, -1.2px);
+}
+
+.meerkat:hover:not(.is-throwing) .meerkat-whistle {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.meerkat:hover:not(.is-throwing) .meerkat-note {
+  opacity: 1;
+  animation: meerkat-note-float 1.4s ease-out 0.15s infinite;
+}
+
+@keyframes meerkat-note-float {
+  0%   { opacity: 0; transform: translate(-1px, 3px) rotate(-12deg); }
+  30%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(3px, -7px) rotate(12deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .meerkat-arm-throw,
+  .meerkat-head,
+  .meerkat-eyes,
+  .meerkat-held,
+  .meerkat-whistle {
+    transition: none;
+  }
+
+  .meerkat:hover:not(.is-throwing) .meerkat-note {
     animation: none;
   }
 }
