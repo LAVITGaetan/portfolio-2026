@@ -1,0 +1,341 @@
+/* ============================================================
+   EXPERIENCE
+   ============================================================ */
+
+.exp-section {
+  width: 100%;
+  padding: 48px 10%;
+  position: relative;
+  scroll-margin-top: 96px;
+}
+
+.exp-section :focus-visible {
+  outline: 2px solid var(--color-text-light-accent);
+  outline-offset: 3px;
+}
+
+@keyframes exp-fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.exp-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/*
+ * Steps: a rail from the first to the last step, filled up to the active chapter.
+ * A move plays in three beats: the step left behind recoils, a head rides the rail,
+ * the target step lands and lights up. --travel paces all of them.
+ */
+
+.exp-layout {
+  --travel: 0.7s;
+}
+
+.exp-track {
+  --count: 3;
+  --progress: 0;
+  position: relative;
+}
+
+.exp-rail {
+  position: absolute;
+  top: 21px;
+  left: calc(100% / var(--count) / 2);
+  right: calc(100% / var(--count) / 2);
+  height: 2px;
+  background: var(--color-border);
+}
+
+.exp-rail-fill {
+  position: relative;
+  display: block;
+  width: calc(100% * var(--progress));
+  height: 100%;
+  background: var(--color-secondary-text);
+  transition: width var(--travel) cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Rides the end of the fill, and docks under the active step at rest. */
+.exp-rail-fill::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -5px;
+  width: 10px;
+  height: 10px;
+  background: var(--color-text-light-accent);
+  box-shadow: 0 0 12px var(--color-secondary-text);
+  transform: translateY(-50%) skewX(-12deg);
+}
+
+.exp-steps {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(var(--count), 1fr);
+}
+
+.exp-step {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  color: var(--color-text-light);
+  font: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.exp-step-level {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 44px;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  color: var(--color-text-light);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  transform: skewX(-12deg);
+  transition: all 0.25s ease;
+}
+
+.exp-step:hover .exp-step-level {
+  border-color: var(--color-secondary-text);
+}
+
+.exp-step-years {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  transition: color 0.25s ease;
+}
+
+.exp-step.is-done .exp-step-level {
+  color: var(--color-text-light-accent);
+  border-color: var(--color-secondary-text);
+}
+
+.exp-step.active .exp-step-level {
+  color: var(--color-primary-text);
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.exp-step.active .exp-step-years {
+  color: var(--color-text);
+}
+
+/* Shockwave ring, fired on departure and on arrival. */
+.exp-step-level::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border: 1px solid var(--color-secondary-text);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes exp-step-wave {
+  from { opacity: 0.9; transform: scale(1); }
+  to   { opacity: 0; transform: scale(1.8); }
+}
+
+@keyframes exp-step-recoil {
+  0%   { transform: skewX(-12deg) scale(1); }
+  35%  { transform: skewX(-12deg) scale(0.84); }
+  100% { transform: skewX(-12deg) scale(1); }
+}
+
+@keyframes exp-step-land {
+  0%   { transform: skewX(-12deg) scale(1); }
+  40%  { transform: skewX(-12deg) scale(1.2); }
+  70%  { transform: skewX(-12deg) scale(0.95); }
+  100% { transform: skewX(-12deg) scale(1); }
+}
+
+/* Departure */
+.exp-step.is-leaving .exp-step-level {
+  animation: exp-step-recoil 0.45s cubic-bezier(0.3, 0, 0.3, 1);
+}
+
+.exp-step.is-leaving .exp-step-level::after {
+  animation: exp-step-wave 0.6s ease-out;
+}
+
+/* Steps passed on the way light up as the head crosses them. */
+.exp-step.is-done:not(.is-leaving) .exp-step-level {
+  transition-delay: calc(var(--travel) / 2);
+}
+
+/* Arrival: the step lights up, bounces and sends its wave once the head gets there. */
+.exp-step.is-arriving .exp-step-level,
+.exp-step.is-arriving .exp-step-years {
+  transition-delay: calc(var(--travel) - 0.15s);
+}
+
+.exp-step.is-arriving .exp-step-level {
+  animation: exp-step-land 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--travel) - 0.1s);
+}
+
+.exp-step.is-arriving .exp-step-level::after {
+  animation: exp-step-wave 0.7s ease-out calc(var(--travel) - 0.05s);
+}
+
+/* Chapter */
+
+.exp-chapter {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  /* Waits for the head to reach the step. */
+  animation: exp-fade-up 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--travel) - 0.2s) backwards;
+}
+
+.exp-chapter-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 20px;
+}
+
+.exp-chapter-index {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-secondary-text);
+}
+
+.exp-chapter-title {
+  font-size: 26px;
+  letter-spacing: 0.02em;
+}
+
+.exp-nav {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.exp-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+/* Card */
+
+.exp-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 2px solid var(--color-border-brand);
+}
+
+.exp-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  min-height: 24px;
+}
+
+.exp-card-kind,
+.exp-card-period {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.exp-card-kind {
+  color: var(--color-secondary-text);
+}
+
+.exp-card-period {
+  color: var(--color-text-light);
+}
+
+.exp-card-title {
+  font-size: 22px;
+  letter-spacing: 0.02em;
+}
+
+.exp-card-role {
+  font-size: 13px;
+  color: var(--color-text-light-accent);
+}
+
+.exp-card-summary {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-text-light);
+}
+
+.exp-card-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.exp-card-list li::before {
+  content: '❯ ';
+  color: var(--color-secondary-text);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .exp-pair {
+    grid-template-columns: 1fr;
+  }
+
+  .exp-step-level {
+    width: 54px;
+    height: 38px;
+    font-size: 11px;
+  }
+
+  .exp-rail {
+    top: 18px;
+  }
+}
+
+@media (max-width: 600px) {
+  .exp-section {
+    padding: 40px 16px;
+  }
+
+  .exp-card {
+    padding: 18px 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .exp-chapter,
+  .exp-step .exp-step-level,
+  .exp-step .exp-step-level::after {
+    animation: none;
+  }
+
+  .exp-rail-fill,
+  .exp-step-level,
+  .exp-step-years {
+    transition: none;
+  }
+}

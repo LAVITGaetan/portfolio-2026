@@ -1,0 +1,434 @@
+/* ============================================================
+   STACKS
+   ============================================================ */
+
+.stk-section {
+  width: 100%;
+  padding: 48px 10%;
+  position: relative;
+  overflow-x: clip;
+  scroll-margin-top: 96px;
+}
+
+.stk-section :focus-visible {
+  outline: 2px solid var(--color-text-light-accent);
+  outline-offset: 3px;
+}
+
+@keyframes stk-fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Layout: grid on the left, as tall as the inspector on the right */
+
+.stk-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 32px;
+}
+
+.stk-left {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* height: 0 + flex-grow: the cards never stretch the row, they fill what the inspector leaves. */
+.stk-scroll-area {
+  position: relative;
+  flex-grow: 1;
+  height: 0;
+}
+
+.stk-scroll {
+  height: 100%;
+  /* Room for the card hover lift and focus ring, which overflow would clip. */
+  margin: -6px;
+  padding: 6px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.stk-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.stk-scroll-more {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  z-index: 1;
+  width: 40px;
+  height: 34px;
+  margin-left: -20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  animation: stk-fade-up 0.3s ease both;
+}
+
+.stk-scroll-more svg {
+  animation: stk-nudge 1.4s ease-in-out infinite;
+}
+
+/* The arrow points right: rotate it down, then nudge it along its own axis. */
+@keyframes stk-nudge {
+  0%, 100% { transform: skewX(8deg) rotate(90deg) translateX(0); }
+  50%      { transform: skewX(8deg) rotate(90deg) translateX(3px); }
+}
+
+.stk-filters {
+  margin-bottom: 16px;
+}
+
+.stk-filter-count {
+  margin-left: 6px;
+  font-size: 9px;
+  opacity: 0.6;
+}
+
+/* Icon / monogram */
+
+.stk-icon {
+  width: var(--stack-size);
+  height: var(--stack-size);
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background: rgba(85, 66, 168, 0.08);
+  border: 1px solid var(--color-border);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* Logos stay in the site palette at rest and take their brand color once lit up. */
+.stk-logo {
+  width: 60%;
+  height: 60%;
+  background-color: var(--color-text-light-accent);
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  transition: background-color 0.3s ease;
+}
+
+.stk-icon.is-monogram,
+.stk-card:hover .stk-icon,
+.stk-card.active .stk-icon,
+.sm-inspector .stk-icon {
+  background: color-mix(in srgb, var(--stack-color) 14%, transparent);
+  border-color: color-mix(in srgb, var(--stack-color) 30%, transparent);
+}
+
+.stk-card:hover .stk-logo,
+.stk-card.active .stk-logo,
+.sm-inspector .stk-logo {
+  background-color: var(--stack-color);
+}
+
+.stk-icon.is-monogram {
+  font-family: var(--font-heading);
+  font-size: calc(var(--stack-size) * 0.36);
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--stack-color) 75%, white);
+}
+
+/* Level — 5 stars, filled / outlined */
+
+.stk-level {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stk-stars {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.stk-star {
+  width: 14px;
+  height: 14px;
+  fill: var(--color-secondary-text);
+  stroke: var(--color-secondary-text);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.stk-star.off {
+  fill: none;
+}
+
+.stk-level.is-large .stk-stars {
+  gap: 5px;
+}
+
+.stk-level.is-large .stk-star {
+  width: 22px;
+  height: 22px;
+}
+
+/* ============================================================
+   GRID (cards used as selectors)
+   ============================================================ */
+
+.stk-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 170px), 1fr));
+  gap: 12px;
+}
+
+.stk-card {
+  width: 100%;
+  height: 100%;
+  gap: 12px;
+  padding: 16px 18px;
+  border: none;
+  border-left: 2px solid var(--color-border-brand);
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  animation: stk-fade-up 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transition: border-color 0.2s ease, transform 0.25s ease, background 0.25s ease;
+}
+
+.stk-card:hover {
+  transform: translateY(-3px);
+  background:
+    linear-gradient(135deg, rgba(85, 66, 168, 0.14), transparent 60%),
+    var(--color-surface);
+}
+
+.stk-card.active {
+  border-left-color: var(--color-secondary-text);
+  background:
+    linear-gradient(135deg, rgba(85, 66, 168, 0.24), transparent 70%),
+    var(--color-surface);
+  box-shadow: inset 0 0 0 1px var(--color-border-brand);
+}
+
+.stk-card.active .stack-name {
+  color: var(--color-text-light-accent);
+}
+
+.stk-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.stk-card-category {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+}
+
+/* ============================================================
+   INSPECTOR
+   ============================================================ */
+
+.sm-inspector {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-height: 440px;
+  padding: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-brand);
+}
+
+.sm-inspector::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--stack-color), transparent);
+}
+
+.sm-inspector::after {
+  content: '';
+  position: absolute;
+  top: -140px;
+  right: -140px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--stack-color) 22%, transparent), transparent 70%);
+  pointer-events: none;
+}
+
+.sm-inspector > * {
+  position: relative;
+  z-index: 1;
+}
+
+.sm-inspector-cmd {
+  font-size: 12px;
+  color: var(--color-text-light);
+}
+
+.sm-inspector-head {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  animation: stk-fade-up 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.sm-inspector-category {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-secondary-text);
+}
+
+.sm-inspector-title {
+  font-size: 30px;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+
+.sm-inspector-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sm-inspector-label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+}
+
+.sm-inspector-level {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.sm-inspector-level > span:last-child {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sm-inspector-projects {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sm-inspector-projects a {
+  font-size: 14px;
+  color: var(--color-text);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.sm-inspector-projects a::before {
+  content: '❯ ';
+  color: var(--color-secondary-text);
+}
+
+.sm-inspector-projects a:hover {
+  color: var(--color-text-light-accent);
+}
+
+.sm-inspector-empty {
+  font-size: 13px;
+  color: var(--color-text-light);
+}
+
+.sm-inspector-siblings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sm-sibling {
+  padding: 4px 10px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-light-accent);
+  background: rgba(85, 66, 168, 0.08);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.sm-sibling:hover {
+  border-color: var(--color-primary);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1100px) {
+  .stk-layout {
+    grid-template-columns: 1fr;
+  }
+
+  /* Inspector first on narrow screens, so the selection stays in view. */
+  .stk-layout > .sm-inspector {
+    order: -1;
+    min-height: 0;
+  }
+
+  /* No inspector alongside anymore: the cards get their own height. */
+  .stk-scroll-area {
+    flex-grow: 0;
+    height: 460px;
+  }
+}
+
+@media (max-width: 600px) {
+  .stk-section {
+    padding: 40px 16px;
+  }
+
+  .stk-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr));
+  }
+
+  .sm-inspector {
+    padding: 20px 16px;
+  }
+
+  .sm-inspector-title {
+    font-size: 24px;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .stk-card,
+  .sm-inspector-head {
+    animation: none;
+  }
+
+  .stk-card {
+    transition: none;
+  }
+
+  .stk-card:hover {
+    transform: none;
+  }
+
+  .stk-scroll-more,
+  .stk-scroll-more svg {
+    animation: none;
+  }
+}

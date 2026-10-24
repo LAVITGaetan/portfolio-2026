@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import Image from 'next/image'
+import { Fragment, useEffect, useRef, type CSSProperties } from "react";
+import ProjectDeck from "../hero/ProjectDeck";
 
 const ROLES = [
     { text: "Développeur Full Stack", wip: false },
@@ -15,6 +15,19 @@ const TYPING_SPEED = 55;
 const DELETING_SPEED = 30;
 const PAUSE_DURATION = 2200;
 const WIP_SUFFIX = " [ en cours... ]";
+/** Typing waits for the intro animation to settle. */
+const TYPING_START_DELAY = 1400;
+
+/** Each word rises on its own; the accent comes last. */
+const TITLE_WORDS = ["Je", "transforme", "des", "idées", "en"];
+
+function TitleWord({ word, index, className }: { word: string; index: number; className?: string }) {
+    return (
+        <span className="hero-word">
+            <span className={className} style={{ "--word-index": index } as CSSProperties}>{word}</span>
+        </span>
+    );
+}
 
 export default function HeroSection() {
     const typedRef = useRef<HTMLSpanElement>(null);
@@ -61,7 +74,7 @@ export default function HeroSection() {
             }
         }
 
-        timer = setTimeout(tick, 600);
+        timer = setTimeout(tick, TYPING_START_DELAY);
         return () => clearTimeout(timer);
     }, []);
 
@@ -75,8 +88,12 @@ export default function HeroSection() {
                         <span className="hero-surtitle-cursor">▋</span>
                     </div>
                     <h1 className="hero-title">
-                        Je transforme des idées en{" "}
-                        <span className="hero-accent">applications.</span>
+                        {TITLE_WORDS.map((word, index) => (
+                            <Fragment key={word}>
+                                <TitleWord word={word} index={index} />{" "}
+                            </Fragment>
+                        ))}
+                        <TitleWord word="applications." index={TITLE_WORDS.length} className="hero-accent" />
                     </h1>
                     <p className="hero-text">
                         Développeur full stack passionné par les interfaces soignées
@@ -89,12 +106,7 @@ export default function HeroSection() {
                         </div>
                     </a>
                 </div>
-                <div className="hero-right">
-                    <div className="hero-placeholder">
-                        <img className="hero-image" src={"/img/hero.jpg"} alt="hero image"/>
-                    </div>
-                    <Image className="hero-shine" src={"/img/shines.png"} alt="decoration stars" width={64} height={64} />
-                </div>
+                <ProjectDeck />
             </div>
         </section>
     );
