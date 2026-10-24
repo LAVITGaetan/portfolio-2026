@@ -26,8 +26,7 @@ export default function ContactSection() {
             <div className="ct-layout">
                 <div className="ct-info">
                     <p className="ct-pitch">
-                        Un projet à lancer, une mission freelance ou un poste à pourvoir ?
-                        Écrivez-moi, je lis tout.
+                        Une idée de projet ? Contactez-moi.
                     </p>
                     <span className="proj-status is-live">
                         <span className="proj-status-dot" />
@@ -60,11 +59,11 @@ export default function ContactSection() {
                             <div className="ct-row">
                                 <label className="ct-field">
                                     <span className="ct-label">Nom</span>
-                                    <input className="ct-input" name="name" required maxLength={CONTACT_FIELD_LIMITS.nameMax} autoComplete="name" placeholder="Ada Lovelace" />
+                                    <input className="ct-input" name="name" required maxLength={CONTACT_FIELD_LIMITS.nameMax} autoComplete="name" placeholder="Batman" />
                                 </label>
                                 <label className="ct-field">
                                     <span className="ct-label">Email</span>
-                                    <input className="ct-input" name="email" type="email" required maxLength={CONTACT_FIELD_LIMITS.emailMax} autoComplete="email" placeholder="ada@exemple.fr" />
+                                    <input className="ct-input" name="email" type="email" required maxLength={CONTACT_FIELD_LIMITS.emailMax} autoComplete="email" placeholder="batman@gotham.com" />
                                 </label>
                             </div>
 

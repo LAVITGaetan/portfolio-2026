@@ -75,7 +75,7 @@ export const PROJECTS: Project[] = [
         {
         slug: "paf-warrior-2d",
         title: "Legend Of The Paf Warrior",
-        tagline: "Jeu vidéo en 2D en Pixel-art avec vue isométrique",
+        tagline: "Tactical RPG Pixel-art en vue isométrique",
         description:
             "RPG de stratégie tour par tour tactique en 2D Pixel-art avec vue isométrique",
         details: [
