@@ -1,0 +1,13 @@
+.ascii-portrait pre {
+    font-family: var(--font-body);
+    font-size: 8px;
+    line-height: 1;
+    white-space: pre;
+    color: var(--color-text-light-accent);
+}
+
+@media (max-width: 600px) {
+    .ascii-portrait pre {
+        font-size: 4px;
+    }
+}

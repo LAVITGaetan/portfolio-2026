@@ -3,6 +3,7 @@
 import MeerkatLogo from "./MeerkatLogo";
 import { ArrowIcon } from "./projects/ProjectIcons";
 import FooterContactLink from "./contact/FooterContactLink";
+import AsciiPortrait from "./ascii/AsciiPortrait";
 import { AVAILABILITY, CONTACT_LINKS, LOCATION } from "../data/contact";
 import { OWNER_NAME, OWNER_ROLE, SECTION_LINKS } from "../data/site";
 import "./projects/projects.css";
@@ -66,6 +67,10 @@ export default function Footer() {
                         <ArrowIcon size={12} />
                     </span>
                 </button>
+            </div>
+
+            <div className="footer-ascii">
+                <AsciiPortrait src="/img/ascii-portrait.jpg" alt="Portrait en ASCII" />
             </div>
         </footer>
     );
